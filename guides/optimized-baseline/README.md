@@ -37,7 +37,7 @@ This guide includes configurations for the following accelerator and model serve
 | Accelerator | `ACCELERATOR_TYPE` | Served model | vLLM | SGLang | TensorRT-LLM | Atom | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | NVIDIA GPU | `gpu` | `Qwen/Qwen3-32B` | ✅ validated | ✅ validated | 🟡 community | — | Default. H100 80 GB reference · 2 replicas × TP=2 (4 GPUs) · `INFRA_PROVIDER`: `base`, `gke` |
-| AMD GPU | `amd` | `Qwen/Qwen3-32B` | ✅ validated | ✅ validated | — | 🟡 community | Instinct MI355X · 2 replicas × TP=2 (4 GPUs) |
+| AMD GPU | `amd` | `Qwen/Qwen3-32B` | ✅ validated | ✅ validated | — | ✅ validated | Instinct MI355X · 2 replicas × TP=2 (4 GPUs) |
 | Intel XPU | `xpu` | `Qwen/Qwen3-0.6B` | ✅ validated | 🟡 community | — | — | vLLM: Data Center GPU Max 1550+ · SGLang: Arc Pro B60 · 2 replicas × 1 XPU via DRA · fp16 |
 | Google TPU v6e | `tpu/v6` | `Qwen/Qwen3-32B` | ✅ validated | — | — | — | GKE only · 2 replicas × 8 chips (`2x4`, TP=8) |
 | Google TPU v7 | `tpu/v7` | `Qwen/Qwen3-32B` | 🟡 community | — | — | — | GKE only · 2 replicas × 4 chips (`2x2x1`, TP=8) |
@@ -101,7 +101,7 @@ export NAMESPACE=llm-d-optimized-baseline
 export MONITORING=false # options: false, true
 export MONITORING_VALUES=
 export ACCELERATOR_TYPE=gpu # options: gpu, amd, xpu, tpu/v6, tpu/v7, tpu/v7-dynamic-slice, npu, cpu, iluvatar, metax, mthreads
-export MODEL_SERVER=vllm # options: vllm, sglang, trtllm
+export MODEL_SERVER=vllm # options: vllm, sglang, trtllm, atom
 export INFRA_PROVIDER=base # options: base, gke, amd-ci
 export TPU_SLICE_TOPOLOGY=2x2x1 # options: 2x2x1, 2x2x2
 export MODEL=Qwen/Qwen3-32B # set to the Served model for your accelerator (table above)
@@ -151,8 +151,8 @@ kubectl create secret generic llm-d-hf-token \
 export ROUTER_BASE_VALUES="${REPO_ROOT}/guides/recipes/router/base.values.yaml"
 ```
 <!-- variants:start -->
-<details open data-when="MODEL_SERVER=vllm,sglang">
-<summary><b>vLLM / SGLang</b></summary>
+<details open data-when="MODEL_SERVER=vllm,sglang,atom">
+<summary><b>vLLM / SGLang / Atom</b></summary>
 
 ```bash
 export ROUTER_VALUES="${REPO_ROOT}/guides/${GUIDE_NAME}/router/${GUIDE_NAME}.values.yaml"
